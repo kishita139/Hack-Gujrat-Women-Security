@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { Redirect ,Link} from "react-router-dom";
-import { PageHeader,Menu,Button,Drawer } from 'antd';
-
+import { PageHeader,Menu,Button,Drawer,Row,Col } from 'antd';
+import "./search.css";
 import "antd/dist/antd.css";
 import ReactMapGL from "react-map-gl";
 import Header from "./Header"
@@ -19,7 +19,9 @@ export default class Home extends Component {
             },
             token: "pk.eyJ1Ijoia3NoYXRha3NoaSIsImEiOiJja2VuOHl5b24weWFwMnJtcXF5MXR0ZDFhIn0.dUfYcwHvsc5e8AOLg0ZKJA",
             collapsed: false,
-            signup: false
+            signup: false,
+            from: "",
+            to: ""
 
         };
       }
@@ -41,6 +43,18 @@ export default class Home extends Component {
           }
     }
       
+    onSubmit = () =>{
+        console.log("submit");
+    }
+
+    changeHandler = e => {
+        let value = e.target.value.replace(/<[^>]*>?/gm, "");
+    
+        this.setState({
+           [e.target.name]: value 
+        });
+      };  
+
     componentDidMount=()=>{
         this.getLocation();
     }
@@ -50,7 +64,28 @@ export default class Home extends Component {
                 <div>
                     
                    <Header/>
-    
+                   <center>
+                   <form onSubmit={this.onSubmit} method="POST" className="form">
+          
+                        <Row><Col xs={7}><span className="form-fields required">From </span></Col> 
+                        <Col xs={15}><input
+                            className="form-control1"
+                            type="text"
+                            name="from"
+                            value={this.state.from}
+                            onChange={this.changeHandler}
+                        /></Col></Row>
+                        <Row><Col xs={7}><span className="form-fields required">To </span></Col>
+                        <Col xs={15}><input
+                            className="form-control1"
+                            type="text"
+                            name="to"
+                            value={this.state.to}
+                            onChange={this.changeHandler}
+                        /></Col></Row>
+                        <Button type="primary" htmlType="submit">Submit</Button><br/>
+                    </form>
+                    </center>
                     <ReactMapGL {...this.state.viewport} 
                     mapboxApiAccessToken={this.state.token}
                     onViewportChange={(viewport=>this.setState({viewport}))}
