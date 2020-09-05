@@ -53,6 +53,7 @@ export default class Header extends Component {
                        <Link to= {"/profile"}><Button type="primary" >{React.createElement(UserOutlined)}</Button></Link></p>
                        <p> <Link to= {"/signup"}><Button type="primary" >Sign Up</Button></Link></p>
                        <p> <Link to= {"/login"}><Button type="primary" >Login</Button></Link></p>
+                       <p> <Link to= {"/feedback"}><Button type="primary" >Feedback</Button></Link></p>
                     </Drawer>
             </div>
         )
