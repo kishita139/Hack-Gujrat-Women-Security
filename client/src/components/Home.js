@@ -67,7 +67,7 @@ export default class Home extends Component {
                    <center>
                    <form onSubmit={this.onSubmit} method="POST" className="form">
           
-                        <Row><Col xs={7}><span className="form-fields required">From </span></Col> 
+                        <br/><Row><Col xs={7}><span className="form-fields1 required">From </span></Col> 
                         <Col xs={15}><input
                             className="form-control1"
                             type="text"
@@ -75,7 +75,7 @@ export default class Home extends Component {
                             value={this.state.from}
                             onChange={this.changeHandler}
                         /></Col></Row>
-                        <Row><Col xs={7}><span className="form-fields required">To </span></Col>
+                        <Row><Col xs={7}><span className="form-fields1 required">To </span></Col>
                         <Col xs={15}><input
                             className="form-control1"
                             type="text"
@@ -83,7 +83,7 @@ export default class Home extends Component {
                             value={this.state.to}
                             onChange={this.changeHandler}
                         /></Col></Row>
-                        <Button type="primary" htmlType="submit">Submit</Button><br/>
+                        <Button type="primary" htmlType="submit">Search</Button><br/>
                     </form>
                     </center>
                     <ReactMapGL {...this.state.viewport} 
