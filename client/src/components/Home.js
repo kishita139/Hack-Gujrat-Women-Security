@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PolylineOverlay from './PolyLineOverlay';
 import { Redirect, Link } from 'react-router-dom';
 import { PageHeader, Menu, Button, Drawer, Row, Col } from 'antd';
 import './search.css';
 import 'antd/dist/antd.css';
 import ReactMapGL from 'react-map-gl';
 import Header from './Header';
+// import routes from '../../../server/controller/dummyRoutes';
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,8 @@ export default class Home extends Component {
       signup: false,
       from: '',
       to: '',
+      SafestRoutes: [],
+      ready: false,
     };
   }
   getPosition = (position) => {
@@ -54,9 +58,10 @@ export default class Home extends Component {
       startAdd: this.state.from,
       destAdd: this.state.to,
     });
-
+    this.setState({ ready: false });
     console.log(res.data);
-
+    this.setState({ ready: true });
+    this.state.SafestRoutes = res.data.data.routes;
     // console.log('submit');
   };
 
@@ -117,7 +122,17 @@ export default class Home extends Component {
           mapboxApiAccessToken={this.state.token}
           onViewportChange={(viewport) => this.setState({ viewport })}
           mapStyle="mapbox://styles/kshatakshi/cken9e08331um19mt5bn8gnp6"
-        ></ReactMapGL>
+        >
+          {this.state.ready &&
+            this.state.SafestRoutes.map((route) => (
+              <div>
+                <PolylineOverlay
+                  points={route.routeGeometry.coordinates}
+                  color={route.routeColor}
+                />
+              </div>
+            ))}
+        </ReactMapGL>
       </div>
     );
   }

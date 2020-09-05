@@ -216,10 +216,10 @@ exports.getSafestRoutes = async (req, res, next) => {
 
     let routeColor;
     if (routeScore >= 5) routeColor = colors.green;
-    if (routeScore == 4) routeColor = colors.yellowGreen;
-    if (routeScore == 3) routeColor = colors.yellow;
-    if (routeScore == 2) routeColor = colors.orange;
-    if (routeScore <= 1) routeColor = colors.red;
+    else if (routeScore >= 4) routeColor = colors.yellowGreen;
+    else if (routeScore >= 3) routeColor = colors.yellow;
+    else if (routeScore >= 2) routeColor = colors.orange;
+    else if (routeScore <= 2) routeColor = colors.red;
 
     const myRoute = {
       routeGeometry,
