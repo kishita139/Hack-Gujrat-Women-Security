@@ -36,8 +36,6 @@ export default class Feedback extends Component {
                         <input type="radio" name="safety" value="fine"/><span>I felt fine</span>
                         <input type="radio" name="safety" value="comfortable"/><span>I felt comfortable</span>
                         </div><br/>
-
-                        
                         <center><Button type="primary" htmlType="submit">Submit</Button></center>
                     </form>
                     </div>
