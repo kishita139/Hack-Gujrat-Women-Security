@@ -1,14 +1,17 @@
+h2{
+    margin: 20px 0px;
+}
 .form{
-    /* position: fixed;  */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
+    
+    width: 100%;
+    height: 100%; 
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2; 
+    cursor: pointer; 
 }
 .form-control1 {
     width: 100%;
@@ -28,3 +31,21 @@
     content: " *";
     color: red;
   }
+  
+.container2{
+    margin: 10px;
+    border: 1px solid rgb(175, 174, 174);
+    border-radius: 5px;
+    padding-bottom: 5px;
+}
+
+.question{
+    margin-left: 3vw;
+    font-size: 16px;
+    font-weight: 500;
+}
+  
+.options{
+    display: flex;
+    justify-content: space-around;
+}
