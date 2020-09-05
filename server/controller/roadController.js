@@ -20,6 +20,20 @@ const getCoordinates = async (address) => {
   return location;
 };
 
+const getCoordinatesMapbox = async (address) => {
+  const addressUrl = encodeURIComponent(address);
+  const geoRes = await axios.get(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${addressUrl}.json?access_token=${process.env.MAPBOX_TOKEN}`
+  );
+
+  const location = geoRes.data.features[0].center;
+
+  return {
+    lat: location[1],
+    lng: location[0],
+  };
+};
+
 // long,lat
 const getRoutes = async (start, end) => {
   try {
@@ -131,8 +145,8 @@ exports.getSafestRoutes = async (req, res, next) => {
 
   // console.log(startAdd, destAdd);
 
-  const startLoc = await getCoordinates(startAdd);
-  const destLoc = await getCoordinates(destAdd);
+  const startLoc = await getCoordinatesMapbox(startAdd);
+  const destLoc = await getCoordinatesMapbox(destAdd);
 
   // console.log(startLoc, destLoc);
 
@@ -152,11 +166,11 @@ exports.getSafestRoutes = async (req, res, next) => {
   const flattendRoads = roadsInRoutes.flat();
   // console.log(flattendRoads);
 
-  flattendRoads.forEach(async (road) => {
+  await flattendRoads.forEach(async (road) => {
     const doc = await Road.findOne({ name: road.name });
-
     // if road not in database calculate policeInvicinity parameter and add to database
     if (!doc) {
+      console.log('road not in db');
       const PS = await getNearestPoliceStation(road.loc[1], road.loc[0]);
       if (!PS) {
         await Road.create({
@@ -173,7 +187,7 @@ exports.getSafestRoutes = async (req, res, next) => {
         });
       }
     } else {
-      // console.log('doc present');
+      console.log('doc present');
     }
   });
 
