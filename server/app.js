@@ -11,5 +11,5 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use('/api/users', userRouter);
-app.use('/api/roads');
+app.use('/api/roads', roadRouter);
 module.exports = app;
