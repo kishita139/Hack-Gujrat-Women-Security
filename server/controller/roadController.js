@@ -1,7 +1,14 @@
 const axios = require('axios');
-
 const Road = require('../models/roadModel');
 const dummyRoutes = require('./dummyRoutes');
+
+const colors = {
+  green: '#38A722',
+  yellowGreen: '#9EAD00',
+  yellow: '#F3DA58',
+  orange: '#F7AB00',
+  red: '#F22D1C',
+};
 
 const getCoordinates = async (address) => {
   const addressUrl = encodeURIComponent(address);
@@ -46,6 +53,77 @@ const getRoads = async (routes) => {
   return roadsInRoutes;
 };
 
+function Radian(degree) {
+  const pi = Math.PI;
+  return degree * (pi / 180);
+}
+
+// point = {lat: 464, long: 4542}
+function distance(point1, point2) {
+  const lat1 = Radian(point1.lat);
+  const lat2 = Radian(point2.lat);
+  const long1 = Radian(point1.long);
+  const long2 = Radian(point2.long);
+
+  const dlat = lat2 - lat1;
+  const dlong = long2 - long1;
+
+  const a =
+    Math.pow(Math.sin(dlat / 2), 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlong / 2), 2);
+
+  const c = 2 * Math.asin(Math.sqrt(a));
+
+  const r = 6371;
+
+  return c * r;
+}
+
+const calcPoliceInVicinity = (dist) => {
+  if (dist > 5) return -5;
+  if (dist > 4.5) return -4;
+  if (dist > 4) return -3;
+  if (dist > 3.5) return -2;
+  if (dist > 3) return -1;
+  if (dist > 2.5) return 0;
+  if (dist > 2) return 1;
+  if (dist > 1.5) return 2;
+  if (dist > 1) return 3;
+  if (dist > 0.5) return 4;
+  return 5;
+};
+
+async function getNearestPoliceStation(lat, long) {
+  const placesRes = await axios.get(
+    `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=5000&type=police+station&keyword=police+station&key=${process.env.GOOGLE_MAPS_API}`
+  );
+
+  const results = placesRes.data.results;
+
+  if (results.length === 0) return undefined;
+
+  let leastDist = Infinity;
+  let closestPS;
+
+  results.forEach((result) => {
+    const PSLocation = result.geometry.location;
+    const dist = distance(
+      { lat, long },
+      { lat: PSLocation.lat, long: PSLocation.lng }
+    );
+
+    if (dist < leastDist) {
+      leastDist = dist;
+      closestPS = result;
+    }
+  });
+
+  return {
+    leastDist,
+    closestPS,
+  };
+}
+
 exports.getSafestRoutes = async (req, res, next) => {
   // convert addresses to coords
   const startAdd = req.body.startAdd;
@@ -64,19 +142,85 @@ exports.getSafestRoutes = async (req, res, next) => {
     [destLoc.lng, destLoc.lat]
   );
 
-  // console.log(routes);
+  console.log(routes);
 
   // get roads in each route
   const roadsInRoutes = await getRoads(routes);
+
   console.dir(roadsInRoutes, { depth: null });
 
-  // filter roads not present in DB
-  // const filteredRoads =
+  const flattendRoads = roadsInRoutes.flat();
+  // console.log(flattendRoads);
+
+  flattendRoads.forEach(async (road) => {
+    const doc = await Road.findOne({ name: road.name });
+
+    // if road not in database calculate policeInvicinity parameter and add to database
+    if (!doc) {
+      const PS = await getNearestPoliceStation(road.loc[1], road.loc[0]);
+      if (!PS) {
+        await Road.create({
+          name: road.name,
+          coordinates: road.loc,
+          policeInVicinity: -6,
+        });
+      } else {
+        await Road.create({
+          name: road.name,
+          coordinates: road.loc,
+          policeInVicinity: calcPoliceInVicinity(PS.leastDist),
+          closestPoliceStation: PS.closestPS,
+        });
+      }
+    } else {
+      // console.log('doc present');
+    }
+  });
+
+  // all roads are in database now
+  const myRoutes = [];
+
+  for (let index = 0; index < routes.length; index++) {
+    const routeGeometry = routes[index].geometry;
+    const routeRoads = roadsInRoutes[index];
+
+    const roadScoresPromises = routeRoads.map(async (road) => {
+      const doc = await Road.findOne({ name: road.name });
+      return doc.finalScore;
+    });
+
+    const roadScores = await Promise.all(roadScoresPromises);
+
+    let routeScore = roadScores.reduce(
+      (routeScore, roadScore) => routeScore + roadScore,
+      0
+    );
+
+    routeScore = routeScore / routeRoads.length;
+    // console.log(routeScore, routeRoads.length);
+    console.log(routeScore);
+
+    let routeColor;
+    if (routeScore >= 5) routeColor = colors.green;
+    if (routeScore == 4) routeColor = colors.yellowGreen;
+    if (routeScore == 3) routeColor = colors.yellow;
+    if (routeScore == 2) routeColor = colors.orange;
+    if (routeScore <= 1) routeColor = colors.red;
+
+    const myRoute = {
+      routeGeometry,
+      routeRoads,
+      routeScore,
+      routeColor,
+    };
+
+    myRoutes.push(myRoute);
+  }
 
   res.status(200).json({
     status: 'success',
     data: {
-      routes: dummyRoutes,
+      routes: myRoutes,
       // routes: routes,
     },
   });
