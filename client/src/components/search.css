@@ -61,3 +61,18 @@ h2{
   background-color: rgb(177, 2, 46);
   color: aliceblue;
 }
+
+.paths{
+  display: flex;
+  justify-content: space-around ;
+  flex-wrap: wrap;
+  position: fixed;
+  top: 75vh
+}
+
+.routebox{
+  margin-right: 5px;
+  border-radius: 5px;
+  /* width: 30%; */
+  text-align: center;
+}

@@ -146,23 +146,19 @@ export default function Home(props) {
       </ReactMapGL>
       <div
         className="paths"
-        style={{ display: 'flex', justifyContent: 'space-around' }}
       >
         {ready &&
           SafestRoutes.map((route, idx) => (
             <div
               style={{
-                backgroundColor: route.routeColor,
-                width: '30%',
-                textAlign: 'center',
+                backgroundColor: route.routeColor
               }}
               className="routebox"
             >
               <h3>{idx + 1}</h3>
-              <p>Safety score:{route.routeScore}</p>
+              <p>Safety score: {route.routeScore}</p>
               <Button
                 type="primary"
-                style={{ width: '80%' }}
                 onClick={() => {
                   setRoads(route.routeRoads);
                   props.history.push(`/feedback`);
