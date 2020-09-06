@@ -8,6 +8,7 @@ import {
   MenuFoldOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import "./header.css"
 export default function Header() {
   const [collapsed, setCollapsed] = useState(false);
   const { user, setUser } = useContext(UserContext);
@@ -30,10 +31,11 @@ export default function Header() {
 
   return (
     <div>
+      <img src="Logo-Design-Inspiration-22.png" alt="Logo"/>
       <PageHeader
         className="site-page-header"
         // onBack={() => null}
-        title="SAFAR"
+        title="   SAFAR"
         subTitle="Keeps you safe"
         extra={[
           <Button key="1" type="primary" onClick={open}>
