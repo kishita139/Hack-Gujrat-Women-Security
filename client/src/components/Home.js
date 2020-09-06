@@ -1,4 +1,5 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useContext } from 'react';
+import { RoadsContext } from '../contexts';
 import axios from 'axios';
 import PolylineOverlay from './PolyLineOverlay';
 import { Redirect, Link } from 'react-router-dom';
@@ -8,7 +9,9 @@ import 'antd/dist/antd.css';
 import ReactMapGL from 'react-map-gl';
 import Header from './Header';
 // import routes from '../../../server/controller/dummyRoutes';
-export default function Home() {
+export default function Home(props) {
+  const { roads, setRoads } = useContext(RoadsContext);
+
   const [viewport, setviewport] = useState({
     latitude: 21.2786567,
     longitude: 81.8661442,
@@ -161,7 +164,8 @@ export default function Home() {
                 type="primary"
                 style={{ width: '80%' }}
                 onClick={() => {
-                  this.props.history.push(`/feedback`);
+                  setRoads(route.routeRoads);
+                  props.history.push(`/feedback`);
                 }}
               >
                 FEEDBACK

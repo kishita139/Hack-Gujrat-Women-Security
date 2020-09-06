@@ -239,3 +239,14 @@ exports.getSafestRoutes = async (req, res, next) => {
     },
   });
 };
+
+exports.submitFeedBack = async (req, res, next) => {
+  const roads = req.body.roads;
+  const feedback = req.body.feedback;
+  roads.forEach(async (road) => {
+    await Road.findOneAndUpdate({ name: road.name }, feedback);
+  });
+  res.status(200).json({
+    status: 'success',
+  });
+};
