@@ -211,6 +211,11 @@ exports.getSafestRoutes = async (req, res, next) => {
     );
 
     routeScore = routeScore / routeRoads.length;
+    if (!routeScore) routeScore = 2;
+
+    // round to 2 decimal places
+    routeScore = parseInt(routeScore.toFixed(2));
+
     // console.log(routeScore, routeRoads.length);
     console.log(routeScore);
 
