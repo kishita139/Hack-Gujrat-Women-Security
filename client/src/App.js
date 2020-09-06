@@ -6,9 +6,10 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Feedback from './components/Feedback';
-import { UserContext } from './contexts';
+import { UserContext, RoadsContext } from './contexts';
 function App() {
   const [user, setUser] = useState(null);
+  const [roads, setRoads] = useState(null);
 
   useEffect(() => {
     // console.log('useEffect running');
@@ -21,14 +22,16 @@ function App() {
   return (
     <Router>
       <UserContext.Provider value={{ user, setUser }}>
-        <Switch>
-          <Route path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/feedback" component={Feedback} />
-          <Route path="/" component={Home} exact />
-          <Route path="*" component={Home} />
-        </Switch>
+        <RoadsContext.Provider value={{ roads, setRoads }}>
+          <Switch>
+            <Route path="/profile" component={Profile} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/feedback" component={Feedback} />
+            <Route path="/" component={Home} exact />
+            <Route path="*" component={Home} />
+          </Switch>
+        </RoadsContext.Provider>
       </UserContext.Provider>
     </Router>
   );
