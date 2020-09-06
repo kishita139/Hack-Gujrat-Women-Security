@@ -117,6 +117,7 @@ export default class Home extends Component {
             <br />
           </form>
         </center>
+        <button className="sos">SOS</button>
         <ReactMapGL
           {...this.state.viewport}
           mapboxApiAccessToken={this.state.token}
@@ -133,6 +134,7 @@ export default class Home extends Component {
               </div>
             ))}
         </ReactMapGL>
+        
       </div>
     );
   }
