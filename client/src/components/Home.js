@@ -64,6 +64,14 @@ export default class Home extends Component {
     res.data.data.routes[1].routeScore = 2;
     this.setState({ ready: true });
     this.state.SafestRoutes = res.data.data.routes;
+    this.setState((prevState) => ({
+      viewport: {
+        // object that we want to update
+        ...prevState.viewport, // keep all other key-value pairs
+        latitude: res.data.data.routes[0].routeGeometry.coordinates[0][1],
+        longitude: res.data.data.routes[0].routeGeometry.coordinates[0][0], // update the value of specific key
+      },
+    }));
     // console.log('submit');
   };
 
