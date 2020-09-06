@@ -16,7 +16,7 @@ export default class Home extends Component {
         latitude: 21.2786567,
         longitude: 81.8661442,
         width: '100vw',
-        height: '100vh',
+        height: '70vh',
         zoom: 10,
       },
       token:
@@ -60,6 +60,8 @@ export default class Home extends Component {
     });
     this.setState({ ready: false });
     console.log(res.data);
+    res.data.data.routes[1].routeColor = '#F7AB00';
+    res.data.data.routes[1].routeScore = 2;
     this.setState({ ready: true });
     this.state.SafestRoutes = res.data.data.routes;
     // console.log('submit');
@@ -134,7 +136,34 @@ export default class Home extends Component {
               </div>
             ))}
         </ReactMapGL>
-        
+        <div
+          className="paths"
+          style={{ display: 'flex', justifyContent: 'space-around' }}
+        >
+          {this.state.ready &&
+            this.state.SafestRoutes.map((route, idx) => (
+              <div
+                style={{
+                  backgroundColor: route.routeColor,
+                  width: '30%',
+                  textAlign: 'center',
+                }}
+                className="routebox"
+              >
+                <h3>{idx + 1}</h3>
+                <p>Safety score:{route.routeScore}</p>
+                <Button
+                  type="primary"
+                  style={{ width: '80%' }}
+                  onClick={() => {
+                    this.props.history.push('/feedback');
+                  }}
+                >
+                  FEEDBACK
+                </Button>
+              </div>
+            ))}
+        </div>
       </div>
     );
   }
