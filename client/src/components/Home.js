@@ -85,7 +85,7 @@ export default class Home extends Component {
           <form onSubmit={this.onSubmit} method="POST" className="form">
             <Row>
               <Col xs={7}>
-                <span className="form-fields required">From </span>
+                <span className="form-fields1 required">From </span>
               </Col>
               <Col xs={15}>
                 <input
@@ -99,7 +99,7 @@ export default class Home extends Component {
             </Row>
             <Row>
               <Col xs={7}>
-                <span className="form-fields required">To </span>
+                <span className="form-fields1 required">To </span>
               </Col>
               <Col xs={15}>
                 <input
@@ -112,7 +112,7 @@ export default class Home extends Component {
               </Col>
             </Row>
             <Button type="primary" htmlType="submit">
-              Submit
+              Search
             </Button>
             <br />
           </form>
