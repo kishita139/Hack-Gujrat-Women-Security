@@ -31,11 +31,11 @@ export default function Header() {
 
   return (
     <div>
-      <img src="Logo-Design-Inspiration-22.png" alt="Logo"/>
+      
       <PageHeader
         className="site-page-header"
         // onBack={() => null}
-        title="   SAFAR"
+        title={[<img src="Logo-Design-Inspiration-222.png" alt="Logo"/>]}
         subTitle="Keeps you safe"
         extra={[
           <Button key="1" type="primary" onClick={open}>
