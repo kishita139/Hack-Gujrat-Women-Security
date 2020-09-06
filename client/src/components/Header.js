@@ -33,7 +33,7 @@ export default function Header() {
       <PageHeader
         className="site-page-header"
         // onBack={() => null}
-        title="Womenify"
+        title="SAFAR"
         subTitle="Keeps you safe"
         extra={[
           <Button key="1" type="primary" onClick={open}>
@@ -42,7 +42,11 @@ export default function Header() {
         ]}
       />
       <Drawer
-        title="Get authenticated for better experience"
+        title={
+          user
+            ? `Welcome ${user.name}`
+            : 'Get authenticated for better experience'
+        }
         placement="right"
         closable={false}
         onClose={close}
@@ -53,28 +57,38 @@ export default function Header() {
           <Link to={'/'}>
             <Button type="primary">{React.createElement(HomeOutlined)}</Button>
           </Link>
-          <Link to={'/profile'}>
-            <Button type="primary">{React.createElement(UserOutlined)}</Button>
-          </Link>
+          {user && (
+            <Link to={'/profile'}>
+              <Button type="primary">
+                {React.createElement(UserOutlined)}
+              </Button>
+            </Link>
+          )}
         </p>
-        <p>
-          {' '}
-          <Link to={'/signup'}>
-            <Button type="primary">Sign Up</Button>
-          </Link>
-        </p>
-        <p>
-          {' '}
-          <Link to={'/login'}>
-            <Button type="primary">Login</Button>
-          </Link>
-        </p>
-        <p>
-          {' '}
-          <Button type="primary" onClick={logout}>
-            Logout
-          </Button>
-        </p>
+        {!user && (
+          <p>
+            {' '}
+            <Link to={'/signup'}>
+              <Button type="primary">Sign Up</Button>
+            </Link>
+          </p>
+        )}
+        {!user && (
+          <p>
+            {' '}
+            <Link to={'/login'}>
+              <Button type="primary">Login</Button>
+            </Link>
+          </p>
+        )}
+        {user && (
+          <p>
+            {' '}
+            <Button type="primary" onClick={logout}>
+              Logout
+            </Button>
+          </p>
+        )}
         <p>
           {' '}
           <Link to={'/feedback'}>
