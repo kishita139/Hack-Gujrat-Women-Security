@@ -19,6 +19,8 @@ export default function Header() {
     setCollapsed(false);
   };
 
+  const handleSOS = () => {};
+
   const logout = async () => {
     const res = await axios.get('api/users/logout', {
       withCredentials: true,
@@ -91,8 +93,10 @@ export default function Header() {
         )}
         <p>
           {' '}
-          <Link to={'/feedback'}>
-            <Button type="primary">Feedback</Button>
+          <Link to={'/SOS'}>
+            <Button type="primary" onClick={handleSOS}>
+              SOS
+            </Button>
           </Link>
         </p>
       </Drawer>
