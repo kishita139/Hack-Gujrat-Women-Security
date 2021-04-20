@@ -11,3 +11,9 @@ cd client npm install
 cd ..
 npm run dev
 ```
+
+![safar1](https://user-images.githubusercontent.com/57298737/115408188-4bce8680-a20e-11eb-8985-1557df4c6127.jpeg)
+![safar2](https://user-images.githubusercontent.com/57298737/115408202-4ec97700-a20e-11eb-9d09-dc8b8642f99a.jpeg)
+![safar3](https://user-images.githubusercontent.com/57298737/115408213-51c46780-a20e-11eb-9f4e-7cba79ba4ad8.jpeg)
+![safar4](https://user-images.githubusercontent.com/57298737/115408233-5426c180-a20e-11eb-990a-bfc5b5085369.jpeg)
+
